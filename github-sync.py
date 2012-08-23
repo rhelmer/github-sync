@@ -36,18 +36,18 @@ class GitHub(object):
                 break
     
     def get_api(self, api_name, repo_name=None, last_backup=None):
+        params = {'user': self.username, 'repo': repo_name}
         valid_apis = {
             'repos':
-                'users/%s/repos' % self.username,
-            'open_pull_requests': 
-                'repos/%s/%s/pulls' % (self.username, repo_name),
+                'users/%(user)s/repos' % params,
+            'open_pull_requests':
+                'repos/%(user)s/%(repo)s/pulls' % params,
             'closed_pull_requests': 
-                'repos/%s/%s/pulls?state=closed' % (self.username, repo_name),
-            'open_issues': 
-                'repos/%s/%s/issues' % (self.username, repo_name),
+                'repos/%(user)s/%(repo)s/pulls?state=closed' % params,
+            'open_issues':
+                'repos/%(user)s/%(repo)s/issues' % params,
             'closed_issues': 
-                'repos/%s/%s/issues?state=closed' % (self.username, repo_name),
-                        
+                'repos/%(user)s/%(repo)s/issues?state=closed' % params
         }
         http_path = None
         if api_name in valid_apis:
