@@ -36,19 +36,22 @@ class GitHub(object):
                 break
     
     def get_api(self, api_name, repo_name=None, last_backup=None):
+        valid_apis = {
+            'repos':
+                'users/%s/repos' % self.username,
+            'open_pull_requests': 
+                'repos/%s/%s/pulls' % (self.username, repo_name),
+            'closed_pull_requests': 
+                'repos/%s/%s/pulls?state=closed' % (self.username, repo_name),
+            'open_issues': 
+                'repos/%s/%s/issues' % (self.username, repo_name),
+            'closed_issues': 
+                'repos/%s/%s/issues?state=closed' % (self.username, repo_name),
+                        
+        }
         http_path = None
-        if api_name == 'repos':
-            http_path = 'users/%s/repos' % self.username
-        elif api_name == 'pull_requests_open':
-            http_path = 'repos/%s/%s/pulls' % (self.username, repo_name)
-        elif api_name == 'pull_requests_closed':
-            http_path = 'repos/%s/%s/pulls?state=closed' % (self.username,
-                                                            repo_name)
-        elif api_name == 'issues_open':
-            http_path = 'repos/%s/%s/issues' % (self.username, repo_name)
-        elif api_name == 'issues_closed':
-            http_path = 'repos/%s/%s/issues?state=closed' % (self.username,
-                                                             repo_name)
+        if api_name in valid_apis:
+            http_path = valid_apis[api_name]
         else:
             raise Exception('unknown API %s' % api_name)
               
@@ -97,8 +100,8 @@ def main():
             repo_name = repo['name']
             print 'Examining: %s' % repo_name
             
-            for metadata in ['pull_requests_open', 'pull_requests_closed',
-                             'issues_open', 'issues_closed']:
+            for metadata in ['open_pull_requests', 'closed_pull_requests',
+                             'open_issues', 'closed_issues']:
                 github.backup(metadata, repo_name)
 
 if __name__ == '__main__':
