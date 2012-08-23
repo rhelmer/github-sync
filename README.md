@@ -2,8 +2,9 @@ Sync all metadata for a given github user.
 
 This includes:
 
-* gists
 * issues
-* org/user info
-* pull request comments
-* followers
+* pull requests
+* review comments (TODO)
+* gists (TODO)
+* org/user info (TODO)
+* followers (TODO)
