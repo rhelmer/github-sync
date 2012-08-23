@@ -61,7 +61,7 @@ class GitHub(object):
         last_backup = self._last_backup(fname)
         data = self.get_api(api_name, repo_name, last_backup)
         if (self._write_backup(backup_dir, fname, data)):
-            print 'Backed up: %s' % repo_name
+            print 'Backed up: %s, %s' % (repo_name, api_name)
 
     def _last_backup(self, fname):
         if os.path.exists(fname):
